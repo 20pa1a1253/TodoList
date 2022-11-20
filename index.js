@@ -1,6 +1,5 @@
-function hello() {
-    console.log("Hello Node.Js!");
-  }
-  
-  hello();
-  
+
+function hello () {
+  console.log('Hello Node.Js!')
+}
+hello()
