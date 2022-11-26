@@ -23,5 +23,9 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.5.1",
     "eslint-plugin-promise": "^6.1.1"
+  },
+  "dependencies": {
+    "http": "^0.0.1-security",
+    "minimist": "^1.2.7"
   }
 }
