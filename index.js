@@ -31,7 +31,7 @@ http.createServer((request, response) => {
       response.write(projectContent);
       response.end();
       break;
-    case '/registration':
+    case '/project/registration':
       response.write(registrationContent);
       response.end();
       break;
