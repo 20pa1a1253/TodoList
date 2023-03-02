@@ -13,7 +13,7 @@ class Todo extends Model {
 }
 Todo.init(
   {
-    // Model attributes are defined here
+    // Model attributesn are defined here
     title: {
       type: DataTypes.STRING,
       allowNull: false,
