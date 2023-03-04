@@ -18,12 +18,9 @@
     
   },
   "production": {
-    "username": "postgres",
-    "password": "bharathii",
-    "database": "todo_db_prod",
-    "host": "127.0.0.1",
-    "dialect": "postgres",
-    "logging": false
+    "use_env_variable":"DATABASE_URL",
+    "dialect":"postgres"
+    
     
   }
 }
