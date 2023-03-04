@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+<body>
+    <h2 style="text-align: center;"> </h2>
+<center style="padding-top: 100px;">
+    <table class="table table-striped table-hover" style="width: 70%; padding-top: 30%;">
+        <thead class="table-dark" style="margin-top: 30%;">
+          <tr>
+            <th scope="col">Tasks</th>
+            <th scope="col">DueDate</th>
+            <th scope="col">Completed</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% tasks.forEach((vary)=>{ %>
+            <% var title= JSON.stringify(vary.title)%>
+            <% var date= JSON.stringify(vary.dueDate)%>
+            <% var stat = JSON.stringify(vary.completed)%>
+          <tr>
+            <td><h6><%-title %></h6></td>
+            <td><h6><%- date%></h6></td>
+            <td colspan="2"><h6><%- stat%></h6></td>
+          </tr>
+        <% })%>
+        </tbody>
+      </table>
+</center>
+    
+</body>
+</html>

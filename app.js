@@ -4,12 +4,67 @@ const { error } = require("console");
 const express = require("express");
 const { request, response } = require("http");
 const bodyParser = require("body-parser");
+const path = require("path");
 const app = express();
 const { Todo } = require("./models");
 const { where } = require("sequelize");
-//const { response } = require('express');
-//const bodyParser=require("body-parser")
+const { Pool } = require("pg");
+
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "public")));
+app.set("view engine", "ejs");
+
+app.get("/", (request, response) => {
+  response.render("new"); // new refers to new.ejs
+});
+app.get("/ystdy", async (request, response) => {
+  var datas = [];
+  var date = new Date();
+  var z = date.toLocaleDateString("en-CA");
+  var rel = await Todo.findAll().then((data) => {
+    data.map((tod) => {
+      if (tod.dataValues.dueDate < z) {
+        datas.push(tod.dataValues);
+      }
+    });
+  });
+  response.render("todo", { tasks: datas });
+  console.log(datas);
+});
+app.get("/today", async (request, response) => {
+  var datas = [];
+  var rel = await Todo.findAll({
+    where: {
+      dueDate: new Date().toISOString(),
+    },
+  }).then((docs) => {
+    if (docs) {
+      docs.forEach((doc) => {
+        datas.push(doc);
+      });
+      console.log(datas);
+      response.render("todo", { tasks: datas });
+    } else {
+      response.status(404).send({
+        message: `Cannot find Tutorial with id=${id}.`,
+      });
+    }
+  });
+});
+app.get("/tmrw", async (request, response) => {
+  var datas = [];
+  var date = new Date();
+  var z = date.toLocaleDateString("en-CA");
+  var rel = await Todo.findAll().then((data) => {
+    data.map((tod) => {
+      if (tod.dataValues.dueDate > z) {
+        datas.push(tod.dataValues);
+      }
+    });
+    console.log(datas);
+    response.render("todo", { tasks: datas });
+  });
+});
 
 app.get("/todo", function (request, responseponse) {
   console.log("Hello World");
