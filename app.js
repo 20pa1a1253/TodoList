@@ -9,27 +9,61 @@ const app = express();
 const { Todo } = require("./models");
 const { where } = require("sequelize");
 const { Pool } = require("pg");
+var cookieParser = require("cookie-parser");
+var csrf = require("csurf");
 
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
+app.use(cookieParser("ssh!some secret string"));
+app.use(csrf({ cookie: true }));
 
-app.get("/", (request, response) => {
-  response.render("new"); // new refers to new.ejs
-});
-app.get("/ystdy", async (request, response) => {
+// app.get("/", (request, response) => {
+//   response.render("index"); // new refers to new.ejs
+// });
+
+app.get("/alltodos", async (request, response) => {
+  var datak = [];
   var datas = [];
+  var datass = [];
+  var datash = [];
   var date = new Date();
   var z = date.toLocaleDateString("en-CA");
   var rel = await Todo.findAll().then((data) => {
     data.map((tod) => {
+      if (tod.dataValues.completed == true) {
+        datash.push(tod.dataValues);
+      }
       if (tod.dataValues.dueDate < z) {
+        datak.push(tod.dataValues);
+        // console.log(data);
+      } else if (tod.dataValues.dueDate == z) {
         datas.push(tod.dataValues);
+      } else if (tod.dataValues.dueDate > z) {
+        datass.push(tod.dataValues);
       }
     });
+    if (request.accepts("html")) {
+      response.render("todo", {
+        task: datash,
+        task1: datak,
+        task2: datas,
+        task3: datass,
+        csrfToken: request.csrfToken(),
+      }); // index refers to index.ejs
+    } else {
+      response.json({
+        task: datash,
+        task1: datak,
+        task2: datas,
+        task3: datass,
+        csrfToken: request.csrfToken(),
+      });
+    }
   });
-  response.render("todo", { tasks: datas });
-  console.log(datas);
+
+  console.log(datash);
 });
 app.get("/today", async (request, response) => {
   var datas = [];
@@ -69,7 +103,7 @@ app.get("/tmrw", async (request, response) => {
 app.get("/todo", function (request, responseponse) {
   console.log("Hello World");
 });
-app.post("/todos", async (request, responseponse) => {
+app.post("/todos", async (request, response) => {
   console.log("created list", request.body);
 
   try {
@@ -78,7 +112,7 @@ app.post("/todos", async (request, responseponse) => {
       dueDate: request.body.dueDate,
       completed: false,
     });
-    return responseponse.json(todo);
+    return response.redirect("/alltodos");
   } catch {
     return responseponse.status(422).json(error);
   }
@@ -123,8 +157,14 @@ app.put("/todos/:id/markAsCompleted", async (req, res) => {
   }
 });
 
-app.delete("/todos/:id", (req, res) => {
+app.delete("/todos/:id", async (req, res) => {
   console.log("Delete a todo by ID: ", req.params.id);
+  // try {
+  //   await Todo.remove(req.params.id);
+  //   return console.log("succes")
+  // } catch (error) {
+  //   return res.status(422).json(error);
+  // }
   const todoId = req.params.id;
   Todo.destroy({
     where: {

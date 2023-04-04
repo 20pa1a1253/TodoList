@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon -e js,ejs, app.js",
-    "start:prod":"node indexx.js",
+    "start:prod": "node indexx.js",
     "db:create:test": "NODE_ENV=test npx sequelize-cli db:create",
     "pretest": "NODE_ENV=test npx sequelize-cli db:drop && NODE_ENV=test npx sequelize-cli db:create",
     "test": "NODE_ENV=test jest --detectOpenHandles",
@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/20pa1a1253/WD301#readme",
   "devDependencies": {
+    "cheerio": "^1.0.0-rc.12",
     "ejs": "^3.1.8",
     "eslint": "^8.33.0",
     "eslint-config-standard": "^17.0.0",
@@ -43,6 +44,8 @@
   },
   "dependencies": {
     "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "csurf": "^1.11.0",
     "express": "^4.18.2",
     "http": "^0.0.1-security",
     "minimist": "^1.2.7",
